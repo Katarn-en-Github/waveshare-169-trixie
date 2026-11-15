@@ -93,15 +93,33 @@ dtparam=x-offset=20
 
 ## 4. Aplicar los cambios
 
-Para cambiar la orientación:
+Existen dos formas de seleccionar la orientación de la pantalla.
 
-1. Modificar el valor MADCTL en el archivo de inicialización.
-2. Generar el nuevo `panel.bin`.
-3. Instalar el firmware actualizado en `/lib/firmware/panel.bin`.
-4. Modificar los parámetros de resolución y desplazamiento en `/boot/firmware/config.txt`.
-5. Reiniciar la Raspberry Pi.
+### Mediante el instalador
+
+El instalador `install.sh` permite seleccionar la orientación durante el proceso de instalación:
+
+- 0° (vertical, predeterminada).
+- 90° (horizontal).
+- 180° (vertical invertida).
+- 270° (horizontal).
+
+El instalador utiliza el firmware y los parámetros de resolución y desplazamiento correspondientes a la orientación seleccionada.
+
+Esta es la forma recomendada de configurar la pantalla.
+
+### Mediante configuración manual
+
+Para cambiar la orientación manualmente:
+
+1. Seleccionar el archivo de firmware correspondiente a la orientación deseada, disponible en el directorio `firmware/` del repositorio.
+2. Copiarlo como `/lib/firmware/panel.bin`.
+3. Modificar los parámetros de resolución y desplazamiento en `/boot/firmware/config.txt`, de acuerdo con la tabla de esta documentación.
+4. Reiniciar la Raspberry Pi.
 
 Los cambios se aplican durante el arranque del sistema.
+
+**Importante:** el valor MADCTL del firmware y los parámetros del overlay deben corresponder a la misma orientación. No se debe combinar un firmware de una orientación con los parámetros de otra.
 
 ## 5. Resultados y observaciones
 
@@ -119,9 +137,11 @@ Se observó que:
 
 No existe una orientación obligatoria: depende de cómo se quiera instalar físicamente la pantalla.
 
-La configuración de 90° fue probada satisfactoriamente y permite utilizar la pantalla en posición horizontal.
+La orientación predeterminada del instalador es 0° (vertical). Las cuatro orientaciones fueron probadas satisfactoriamente y permiten utilizar la pantalla con el texto correctamente orientado.
 
-Para reproducir los resultados, es importante utilizar conjuntamente los valores MADCTL y los parámetros del overlay indicados en esta documentación.
+Para reproducir los resultados, es importante utilizar conjuntamente los archivos de firmware y los parámetros del overlay indicados en esta documentación.
+
+Nota: los valores de esta guía corresponden a las pruebas realizadas con la pantalla Waveshare 1.69" ST7789V2 en Raspberry Pi Zero W Rev 1.1 y Raspberry Pi OS Trixie.
 
 ---
 
