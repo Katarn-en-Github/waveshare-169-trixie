@@ -1,5 +1,4 @@
 
-cat > orientaciones.md <<'EOF'
 # Orientaciones de la pantalla Waveshare 1.69"
 
 La pantalla Waveshare 1.69" utiliza el controlador ST7789V2. Es posible configurar cuatro orientaciones: 0°, 90°, 180° y 270°.
