@@ -258,6 +258,10 @@ La documentación se mantiene inicialmente en español. La versión en inglés s
 
 El propósito de este repositorio es compartir una solución práctica y reproducible con la comunidad de Raspberry Pi, especialmente con quienes quieran utilizar esta pequeña pantalla como consola Linux en Raspberry Pi OS Trixie.
 
+## Referencias
+
+- **Waveshare – 1.69inch LCD Module:** [Documentación oficial del fabricante](https://www.waveshare.com/wiki/1.69inch_LCD_Module). Incluye las características técnicas, conexiones, especificaciones y ejemplos de funcionamiento de la pantalla LCD ST7789V2.
+
 ## Contribuciones
 
 Las pruebas realizadas, observaciones y mejoras de otros usuarios serán bienvenidas.
