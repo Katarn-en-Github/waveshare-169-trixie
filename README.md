@@ -131,4 +131,73 @@ Más información: [docs/rendimiento.md](docs/rendimiento.md).
 Durante las pruebas se registraron los siguientes valores:
 
 - Temperatura en reposo: aproximadamente 34,7 °C.
-- Temperatura
+- Temperatura máxima observada durante la reproducción: 42,2 °C.
+
+No se modificó la frecuencia de funcionamiento de la CPU.
+
+## Enfoque técnico
+
+La solución utiliza componentes disponibles en Raspberry Pi OS Trixie:
+
+- `mipi-dbi-spi` como Device Tree Overlay.
+- `panel-mipi-dbi` como controlador de pantalla.
+- `drm_mipi_dbi` para la comunicación con el subsistema DRM.
+- Un archivo de firmware `panel.bin` con la secuencia de inicialización del ST7789V2.
+
+La pantalla se integra en el sistema gráfico del kernel, permitiendo utilizarla como consola Linux.
+
+No se necesita mantener un programa Python ejecutándose en segundo plano para actualizar la pantalla.
+
+Más información: [docs/detalles-tecnicos.md](docs/detalles-tecnicos.md).
+
+## Estructura del repositorio
+
+```text
+waveshare-169-trixie/
+├── config/
+│   └── waveshare-169.conf
+├── docs/
+│   ├── conexiones.md
+│   ├── detalles-tecnicos.md
+│   ├── orientaciones.md
+│   └── rendimiento.md
+├── firmware/
+│   ├── panel.bin
+│   ├── waveshare-169-init-180.bin
+│   ├── waveshare-169-init-270.bin
+│   └── waveshare-169-init-90.bin
+├── tools/
+│   └── mipi-dbi-cmd
+├── install.sh
+├── uninstall.sh
+└── README.md
+```
+
+## Documentación
+
+| Documento | Contenido |
+|---|---|
+| [Conexiones](docs/conexiones.md) | Cableado entre Raspberry Pi y pantalla |
+| [Detalles técnicos](docs/detalles-tecnicos.md) | Funcionamiento de DRM/KMS y configuración |
+| [Orientaciones](docs/orientaciones.md) | Configuración de las cuatro orientaciones |
+| [Rendimiento](docs/rendimiento.md) | Pruebas de velocidad SPI y temperatura |
+
+## Estado del proyecto
+
+**Implementación técnica y pruebas principales completadas.**
+
+La instalación, desinstalación y reinstalación fueron verificadas en una instalación limpia de Raspberry Pi OS Trixie sobre Raspberry Pi Zero W Rev 1.1.
+
+Los scripts `install.sh` y `uninstall.sh` están publicados en el repositorio y sus archivos fueron verificados mediante SHA256.
+
+La documentación se mantiene inicialmente en español. La versión en inglés se incorporará posteriormente.
+
+## Objetivo
+
+El propósito de este repositorio es compartir una solución práctica y reproducible con la comunidad de Raspberry Pi, especialmente con quienes quieran utilizar esta pequeña pantalla como consola Linux en Raspberry Pi OS Trixie.
+
+## Contribuciones
+
+Las pruebas realizadas, observaciones y mejoras de otros usuarios serán bienvenidas.
+
+Se agradecen especialmente los reportes de funcionamiento en otros modelos de Raspberry Pi y distintas versiones del sistema operativo.
