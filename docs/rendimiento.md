@@ -118,7 +118,9 @@ La configuración que ofreció el mejor resultado en nuestras pruebas fue:
 dtoverlay=mipi-dbi-spi,spi0-0,speed=32000000,write-only
 ```
 
-<badge color="success">Probada y estable en nuestro equipo</badge>
+**Velocidad recomendada para este proyecto: 32 MHz.**
+
+Esta configuración fue probada y funcionó correctamente en nuestra Raspberry Pi Zero W Rev 1.1 con la pantalla Waveshare 1.69" ST7789V2.
 
 Después de aplicar esta configuración y reiniciar, se comprobó:
 
@@ -129,7 +131,9 @@ Después de aplicar esta configuración y reiniciar, se comprobó:
 - No se perdió la imagen.
 - ZeroPlay presentó una reproducción considerablemente más fluida.
 
-**Recomendación:** comenzar con 10 MHz si se desea una configuración conservadora y aumentar progresivamente la velocidad, comprobando la estabilidad de cada instalación. Los 32 MHz son el valor que mejor funcionó en nuestro montaje, pero cada combinación de Raspberry Pi, pantalla y cableado puede comportarse de manera diferente.
+**Nota sobre compatibilidad:** si se desea comprobar la estabilidad en otro montaje, puede comenzarse con una velocidad conservadora de 10 MHz y aumentarla progresivamente a 20 MHz y 32 MHz, verificando el funcionamiento después de cada cambio.
+
+Los 32 MHz son el valor que mejor funcionó en nuestro equipo. Sin embargo, no se garantiza que todas las combinaciones de Raspberry Pi, pantalla y cableado admitan la misma velocidad.
 
 ## 6. SPI y frecuencia de refresco: dos conceptos diferentes
 
