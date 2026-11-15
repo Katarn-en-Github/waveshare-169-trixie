@@ -51,22 +51,57 @@ Se verificaron la instalación inicial, la desinstalación, la restauración de 
 
 El repositorio incluye el instalador `install.sh`, que automatiza la configuración de la pantalla.
 
-Clona o descarga este repositorio y ejecuta:
+### Método 1: Descarga directa desde la Raspberry Pi
+
+Si la Raspberry Pi tiene conexión a Internet, es posible descargar y ejecutar el instalador directamente desde GitHub, sin necesidad de utilizar otro ordenador.
+
+**1. Descargar el instalador:**
+
+```bash
+wget https://raw.githubusercontent.com/Katarn-en-Github/waveshare-169-trixie/main/install.sh
+```
+
+**2. Verificar la integridad del archivo:**
+
+```bash
+sha256sum install.sh
+```
+
+El SHA256 esperado es:
+
+```text
+4743255a6833de06ca0ef6af0665450cfe7ef66a4a6d68d08d1cdeda68696cb1
+```
+
+Antes de continuar, comprobar que el resultado coincide exactamente.
+
+**3. Ejecutar el instalador:**
 
 ```bash
 sudo bash install.sh
 ```
 
+Durante el proceso se podrá seleccionar la orientación de la pantalla.
+
+### Método 2: Clonar o descargar el repositorio
+
+También es posible obtener el repositorio completo y ejecutar el instalador desde su directorio:
+
+```bash
+cd waveshare-169-trixie
+sudo bash install.sh
+```
+
 El instalador:
 
-1. Comprueba el equipo, el sistema operativo y la arquitectura.
-2. Solicita la orientación de la pantalla, con 0° como opción predeterminada.
-3. Descarga el firmware correspondiente desde el repositorio.
-4. Verifica el tamaño y el SHA256 del firmware.
-5. Instala el firmware en `/lib/firmware/panel.bin`.
-6. Configura el overlay MIPI DBI SPI.
-7. Configura `fbcon=map:1` para dirigir la consola al framebuffer de la pantalla Waveshare.
-8. Conserva respaldos de los archivos originales y registra la configuración administrada.
+- Comprueba el equipo, el sistema operativo y la arquitectura.
+- Solicita la orientación de la pantalla, con 0° como opción predeterminada.
+- Descarga el firmware correspondiente desde el repositorio.
+- Verifica el tamaño y el SHA256 del firmware.
+- Instala el firmware en `/lib/firmware/panel.bin`.
+- Configura el overlay MIPI DBI SPI.
+- Configura `fbcon=map:1` para dirigir la consola al framebuffer de la pantalla Waveshare.
+- Conserva respaldos de los archivos originales y registra la configuración administrada.
 
 Al finalizar, reinicia la Raspberry Pi:
 
