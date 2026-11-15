@@ -1,3 +1,5 @@
+
+cat > orientaciones.md <<'EOF'
 # Orientaciones de la pantalla Waveshare 1.69"
 
 La pantalla Waveshare 1.69" utiliza el controlador ST7789V2. Es posible configurar cuatro orientaciones: 0°, 90°, 180° y 270°.
@@ -13,12 +15,12 @@ Para conseguirlo hay que modificar dos elementos de la configuración:
 
 Las siguientes combinaciones fueron probadas visualmente en una Raspberry Pi Zero W con Raspberry Pi OS Trixie.
 
-| Orientación | MADCTL (`0x36`) | Ancho | Alto | Desplazamiento |
-|---|---|---:|---:|---|
-| 0° | `0x00` | 240 | 280 | Y = 20 |
-| 90° | `0x60` | 280 | 240 | X = 20 |
-| 180° | `0xC0` | 240 | 280 | Y = 20 |
-| 270° | `0xA0` | 280 | 240 | X = 20 |
+| **Orientación** | **MADCTL (`0x36`)** | **Ancho** | **Alto** | **Desplazamiento** |
+| --------------- | ------------------- | --------- | -------- | ------------------ |
+| 0°              | `0x00`              | 240       | 280      | Y = 20             |
+| 90°             | `0x60`              | 280       | 240      | X = 20             |
+| 180°            | `0xC0`              | 240       | 280      | Y = 20             |
+| 270°            | `0xA0`              | 280       | 240      | X = 20             |
 
 Las cuatro configuraciones permiten visualizar la consola con el texto correctamente orientado.
 
@@ -34,12 +36,12 @@ El segundo valor es el que determina la orientación.
 
 Para seleccionar otra posición, sustituir ese valor de acuerdo con la tabla:
 
-| Orientación | Instrucción |
-|---|---|
-| 0° | `command 0x36 0x00` |
-| 90° | `command 0x36 0x60` |
-| 180° | `command 0x36 0xC0` |
-| 270° | `command 0x36 0xA0` |
+| **Orientación** | **Instrucción**     |
+| --------------- | ------------------- |
+| 0°              | `command 0x36 0x00` |
+| 90°             | `command 0x36 0x60` |
+| 180°            | `command 0x36 0xC0` |
+| 270°            | `command 0x36 0xA0` |
 
 Después de modificar la instrucción, hay que generar nuevamente el archivo binario `panel.bin` utilizando la herramienta `mipi-dbi-cmd` y sustituir el firmware instalado en:
 
@@ -141,8 +143,14 @@ La orientación predeterminada del instalador es 0° (vertical). Las cuatro orie
 
 Para reproducir los resultados, es importante utilizar conjuntamente los archivos de firmware y los parámetros del overlay indicados en esta documentación.
 
-Nota: los valores de esta guía corresponden a las pruebas realizadas con la pantalla Waveshare 1.69" ST7789V2 en Raspberry Pi Zero W Rev 1.1 y Raspberry Pi OS Trixie.
+**Nota:** los valores de esta guía corresponden a las pruebas realizadas con la pantalla Waveshare 1.69" ST7789V2 en Raspberry Pi Zero W Rev 1.1 y Raspberry Pi OS Trixie.
+EOF
 
----
-
-**Nota:** los valores de esta guía corresponden a las pruebas realizadas con la pantalla Waveshare 1.69" ST7789V2 en Raspberry Pi Zero W y Raspberry Pi OS Trixie.
+echo "===== VERIFICACIÓN DEL DOCUMENTO ====="
+wc -l orientaciones.md
+echo
+echo "===== INICIO DEL DOCUMENTO ====="
+sed -n '1,35p' orientaciones.md
+echo
+echo "===== FINAL DEL DOCUMENTO ====="
+tail -n 25 orientaciones.md
