@@ -17,6 +17,7 @@ El objetivo es ofrecer una instalación reproducible, sencilla y documentada, qu
 - Integración con el sistema de consola Linux.
 - Funcionamiento desde el arranque.
 - Cuatro orientaciones disponibles: 0°, 90°, 180° y 270°.
+- Cambio de orientación mediante una nueva ejecución del instalador, sin necesidad de desinstalar previamente.
 - Configuración persistente mediante Device Tree Overlay.
 - Instalación y desinstalación mediante scripts.
 - Respaldos de la configuración original del sistema.
@@ -73,7 +74,7 @@ Al finalizar, reinicia la Raspberry Pi:
 sudo reboot
 ```
 
-### Cambiar la orientación de la pantalla
+## Cambiar la orientación de la pantalla
 
 Si la pantalla LCD ya está instalada y funcionando, no es necesario desinstalarla ni modificar manualmente los archivos de configuración para cambiar su orientación.
 
@@ -97,6 +98,7 @@ Después de finalizar, reiniciar la Raspberry Pi para aplicar los cambios.
 **No es necesario ejecutar previamente `uninstall.sh`.** El instalador admite nuevas ejecuciones sobre una instalación existente y conserva los respaldos originales, sin generar bloques duplicados en la configuración.
 
 Este procedimiento fue probado satisfactoriamente en una Raspberry Pi Zero W con Raspberry Pi OS Trixie, cambiando la orientación de una pantalla que ya estaba funcionando.
+La selección de una nueva orientación no modifica los respaldos originales realizados durante la primera instalación.
 
 ## Desinstalación
 
