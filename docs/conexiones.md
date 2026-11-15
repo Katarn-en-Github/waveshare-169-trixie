@@ -46,9 +46,17 @@ BL   ---------------- Pin 12 (GPIO18)
 
 ## Activación de SPI
 
-La interfaz SPI debe estar habilitada en Raspberry Pi OS Trixie.
+La pantalla utiliza la interfaz SPI0 de la Raspberry Pi.
 
-Puede habilitarse mediante:
+Cuando se utiliza el instalador `install.sh` de este proyecto, la interfaz SPI se habilita automáticamente mediante la configuración:
+
+```ini
+dtparam=spi=on
+```
+
+Por tanto, no es necesario habilitar SPI manualmente antes de ejecutar el instalador.
+
+Si se desea preparar la interfaz manualmente, puede hacerse mediante:
 
 ```bash
 sudo raspi-config
@@ -56,7 +64,7 @@ sudo raspi-config
 
 Seleccionar:
 
-`Interface Options` → `SPI` → `Enable`
+**Interface Options → SPI → Enable**
 
 También puede habilitarse desde la terminal:
 
@@ -64,18 +72,20 @@ También puede habilitarse desde la terminal:
 sudo raspi-config nonint do_spi 0
 ```
 
-Después de reiniciar, comprobar que los dispositivos SPI están disponibles:
+Después de reiniciar, y antes de instalar el controlador de la pantalla, se puede comprobar que los dispositivos SPI están disponibles:
 
 ```bash
 ls -l /dev/spidev*
 ```
 
-En esta configuración se espera encontrar:
+En esta etapa se espera encontrar:
 
 ```text
 /dev/spidev0.0
 /dev/spidev0.1
 ```
+
+**Nota:** una vez instalado el controlador MIPI DBI, el dispositivo SPI0 CE0 queda asociado a la pantalla. Por ello, no debe utilizarse la ausencia de `/dev/spidev0.0` después de la instalación como indicación de que SPI está deshabilitado.
 
 ## Comprobación final
 
