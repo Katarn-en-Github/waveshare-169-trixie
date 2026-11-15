@@ -73,6 +73,31 @@ Al finalizar, reinicia la Raspberry Pi:
 sudo reboot
 ```
 
+### Cambiar la orientación de la pantalla
+
+Si la pantalla LCD ya está instalada y funcionando, no es necesario desinstalarla ni modificar manualmente los archivos de configuración para cambiar su orientación.
+
+Simplemente hay que ejecutar nuevamente el instalador:
+
+```bash
+sudo bash install.sh
+```
+
+Durante el proceso, seleccionar la nueva orientación deseada:
+
+- 0° (vertical).
+- 90° (horizontal).
+- 180° (vertical invertida).
+- 270° (horizontal).
+
+El instalador actualizará automáticamente el firmware `panel.bin` y los parámetros de resolución y desplazamiento correspondientes en `/boot/firmware/config.txt`.
+
+Después de finalizar, reiniciar la Raspberry Pi para aplicar los cambios.
+
+**No es necesario ejecutar previamente `uninstall.sh`.** El instalador admite nuevas ejecuciones sobre una instalación existente y conserva los respaldos originales, sin generar bloques duplicados en la configuración.
+
+Este procedimiento fue probado satisfactoriamente en una Raspberry Pi Zero W con Raspberry Pi OS Trixie, cambiando la orientación de una pantalla que ya estaba funcionando.
+
 ## Desinstalación
 
 El repositorio incluye `uninstall.sh` para retirar la configuración administrada por el proyecto y restaurar los archivos originales.
