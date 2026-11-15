@@ -2,20 +2,24 @@
 
 **Pantalla ST7789V2 funcionando como consola Linux mediante DRM/KMS en Raspberry Pi Zero W.**
 
-Este proyecto documenta cómo configurar la pantalla LCD Waveshare de 1.69 pulgadas y resolución 240 × 280 para utilizarla como pantalla principal de consola en Raspberry Pi OS Trixie, sin depender de programas Python que dibujen continuamente en ella.
+Este proyecto documenta cómo configurar la pantalla LCD Waveshare de 1.69 pulgadas y resolución 240 × 280 para utilizarla como consola Linux en Raspberry Pi OS Trixie.
 
-El objetivo es conseguir una instalación reproducible, sencilla y documentada, que permita que la pantalla funcione desde el arranque del sistema y muestre directamente la consola Linux.
+La solución utiliza el subsistema DRM/KMS del kernel y el overlay `mipi-dbi-spi`, sin depender de programas Python que dibujen continuamente en la pantalla.
+
+El objetivo es ofrecer una instalación reproducible, sencilla y documentada, que permita utilizar esta pequeña pantalla como consola desde el arranque del sistema.
 
 ## Características
 
 - Pantalla Waveshare 1.69" con controlador ST7789V2.
-- Resolución nativa: 240 × 280 píxeles.
+- Resolución nativa de 240 × 280 píxeles.
 - Comunicación mediante SPI.
 - Control de pantalla mediante DRM/KMS.
 - Integración con el sistema de consola Linux.
 - Funcionamiento desde el arranque.
-- Cuatro orientaciones de pantalla.
+- Cuatro orientaciones disponibles: 0°, 90°, 180° y 270°.
 - Configuración persistente mediante Device Tree Overlay.
+- Instalación y desinstalación mediante scripts.
+- Respaldos de la configuración original del sistema.
 
 ## Hardware probado
 
@@ -36,7 +40,58 @@ El objetivo es conseguir una instalación reproducible, sencilla y documentada, 
 | Arquitectura | ARM 32-bit (armhf) |
 | Kernel | 6.18.x |
 
-Las pruebas se realizaron tanto en una instalación de referencia como en una instalación limpia de Raspberry Pi OS Trixie.
+Las pruebas incluyen instalaciones de referencia y una instalación limpia de Raspberry Pi OS Trixie.
+
+Se verificaron la instalación inicial, la desinstalación, la restauración de la configuración original y una posterior reinstalación.
+
+**Nota:** el funcionamiento ha sido comprobado en el hardware y las versiones indicadas. No se garantiza el mismo resultado en otros modelos de Raspberry Pi o versiones del sistema operativo.
+
+## Instalación
+
+El repositorio incluye el instalador `install.sh`, que automatiza la configuración de la pantalla.
+
+Clona o descarga este repositorio y ejecuta:
+
+```bash
+sudo bash install.sh
+```
+
+El instalador:
+
+1. Comprueba el equipo, el sistema operativo y la arquitectura.
+2. Solicita la orientación de la pantalla, con 0° como opción predeterminada.
+3. Descarga el firmware correspondiente desde el repositorio.
+4. Verifica el tamaño y el SHA256 del firmware.
+5. Instala el firmware en `/lib/firmware/panel.bin`.
+6. Configura el overlay MIPI DBI SPI.
+7. Configura `fbcon=map:1` para dirigir la consola al framebuffer de la pantalla Waveshare.
+8. Conserva respaldos de los archivos originales y registra la configuración administrada.
+
+Al finalizar, reinicia la Raspberry Pi:
+
+```bash
+sudo reboot
+```
+
+## Desinstalación
+
+El repositorio incluye `uninstall.sh` para retirar la configuración administrada por el proyecto y restaurar los archivos originales.
+
+Ejecuta:
+
+```bash
+sudo bash uninstall.sh
+```
+
+El desinstalador comprueba los archivos administrados y restaura los respaldos correspondientes. También elimina los archivos instalados por el proyecto cuando no existían antes de la instalación.
+
+Si detecta modificaciones posteriores que impiden una restauración segura, evita sobrescribirlas.
+
+Al finalizar, reinicia la Raspberry Pi:
+
+```bash
+sudo reboot
+```
 
 ## Orientaciones disponibles
 
@@ -44,12 +99,14 @@ Se comprobaron las cuatro orientaciones mediante la configuración MADCTL del co
 
 | Orientación | MADCTL | Resolución configurada | Desplazamiento |
 |---|---|---|---|
-| 0° | `0x00` | 240 × 280 | Y = 20 |
-| 90° | `0x60` | 280 × 240 | X = 20 |
-| 180° | `0xC0` | 240 × 280 | Y = 20 |
-| 270° | `0xA0` | 280 × 240 | X = 20 |
+| 0° | 0x00 | 240 × 280 | Y = 20 |
+| 90° | 0x60 | 280 × 240 | X = 20 |
+| 180° | 0xC0 | 240 × 280 | Y = 20 |
+| 270° | 0xA0 | 280 × 240 | X = 20 |
 
 Las cuatro configuraciones fueron probadas visualmente, verificando que el texto de la consola pudiera leerse correctamente.
+
+Más información: [docs/orientaciones.md](docs/orientaciones.md).
 
 ## Rendimiento SPI
 
@@ -63,61 +120,15 @@ Se realizaron pruebas con diferentes velocidades de comunicación SPI durante la
 
 En las pruebas realizadas, 32 MHz ofreció una mejora considerable en la fluidez de reproducción.
 
-**Importante:** la velocidad SPI determina la capacidad de transferencia de datos entre la Raspberry Pi y la pantalla. No representa directamente la frecuencia de refresco nativa del panel.
+La velocidad SPI determina la capacidad de transferencia de datos entre la Raspberry Pi y la pantalla. No representa directamente la frecuencia de refresco nativa del panel.
 
 Los 32 MHz son un valor comprobado en nuestro hardware de pruebas; no constituyen una garantía de funcionamiento para todas las unidades o instalaciones.
 
-### Temperatura
+Más información: [docs/rendimiento.md](docs/rendimiento.md).
 
-Durante las pruebas de reproducción de vídeo se registraron los siguientes valores:
+## Temperatura
+
+Durante las pruebas se registraron los siguientes valores:
 
 - Temperatura en reposo: aproximadamente 34,7 °C.
-- Temperatura máxima observada durante la reproducción: 42,2 °C.
-
-No se modificó la frecuencia de funcionamiento de la CPU.
-
-## Enfoque técnico
-
-La solución utiliza componentes disponibles en Raspberry Pi OS Trixie:
-
-- `mipi-dbi-spi` como Device Tree Overlay.
-- `panel-mipi-dbi` como controlador de pantalla.
-- `drm_mipi_dbi` para la comunicación con el subsistema DRM.
-- Un archivo de firmware `panel.bin` con la secuencia de inicialización del ST7789V2.
-
-La pantalla se integra en el sistema gráfico del kernel, permitiendo utilizarla como consola Linux.
-
-No se necesita mantener un programa Python ejecutándose en segundo plano para actualizar la pantalla.
-
-## Estado del proyecto
-
-<details>
-<summary>Desarrollo y documentación</summary>
-
-- [x] Funcionamiento de la pantalla en Raspberry Pi OS Trixie.
-- [x] Prueba en una instalación limpia.
-- [x] Visualización de la consola Linux desde el arranque.
-- [x] Comprobación de las cuatro orientaciones.
-- [x] Pruebas de rendimiento SPI a 10, 20 y 32 MHz.
-- [x] Comprobación de temperatura durante reproducción de vídeo.
-- [ ] Documentación completa de conexiones.
-- [ ] Documentación detallada de instalación manual.
-- [ ] Preparación del instalador automático.
-- [ ] Preparación del desinstalador.
-- [ ] Pruebas adicionales de reproducibilidad.
-
-</details>
-
-## Objetivo
-
-El propósito de este repositorio es compartir una solución práctica y reproducible con la comunidad de Raspberry Pi, especialmente con quienes quieran utilizar esta pequeña pantalla como consola Linux en Raspberry Pi OS Trixie.
-
-La documentación se desarrollará inicialmente en español. Posteriormente se incorporará una versión en inglés.
-
-## Contribuciones
-
-Las pruebas realizadas, observaciones y mejoras de otros usuarios serán bienvenidas. Se agradecen especialmente los reportes de funcionamiento en otros modelos de Raspberry Pi y distintas versiones del sistema operativo.
-
----
-
-**Proyecto en desarrollo.** La documentación y los scripts de instalación se irán incorporando a medida que se completen y verifiquen.
+- Temperatura
