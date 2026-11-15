@@ -223,31 +223,37 @@ En ambas se consiguió iniciar la pantalla desde el arranque y visualizar la con
 
 Esto permitió comprobar que la solución no dependía exclusivamente de la configuración de una instalación anterior.
 
-## 9. Consideraciones para futuras versiones
+## 9. Instalación y desinstalación automatizadas
 
-El objetivo de este proyecto es facilitar la instalación a otros usuarios.
+El repositorio incluye dos scripts para facilitar la instalación y retirada de la configuración:
 
-Por ello, se plantea organizar los componentes de forma que un futuro instalador automático pueda:
+- `install.sh`: instala el firmware, configura el overlay MIPI DBI SPI, aplica la orientación seleccionada y configura la consola Linux mediante `fbcon=map:1`.
+- `uninstall.sh`: comprueba los archivos administrados por el proyecto y restaura los respaldos originales cuando corresponde.
 
-1. Comprobar que se está ejecutando Raspberry Pi OS Trixie.
-2. Identificar la arquitectura y los componentes necesarios.
-3. Habilitar SPI si todavía no está habilitado.
-4. Instalar el firmware `panel.bin`.
-5. Configurar el overlay en `config.txt`.
-6. Aplicar la orientación seleccionada.
-7. Permitir revertir los cambios mediante un desinstalador.
+Ambos scripts fueron probados en una instalación limpia de Raspberry Pi OS Lite Trixie de 32 bits sobre Raspberry Pi Zero W Rev 1.1.
 
-Estos pasos forman parte del desarrollo previsto y no deben considerarse todavía un instalador terminado.
+Las pruebas incluyeron:
+
+1. Instalación inicial y activación de la pantalla después del reinicio.
+2. Desinstalación y restauración de la configuración original.
+3. Comprobación de la eliminación de los archivos instalados por el proyecto cuando no existían previamente.
+4. Reinstalación posterior en el mismo sistema.
+
+El proceso completo se realizó satisfactoriamente.
+
+Los scripts están disponibles en la raíz del repositorio:
+
+- [`install.sh`](../install.sh)
+- [`uninstall.sh`](../uninstall.sh)
+
+**Nota:** los scripts están diseñados para Raspberry Pi OS Trixie y la configuración de hardware documentada en este proyecto. Las pruebas realizadas no garantizan compatibilidad con todos los modelos de Raspberry Pi o versiones del sistema operativo.
 
 ## 10. Referencias
 
-- [Linux Kernel: panel-mipi-dbi SPI binding](https://github.com/torvalds/linux/blob/master/Documentation/devicetree/bindings/display/panel/panel-mipi-dbi-spi.yaml)
-- [Linux Kernel: DRM/KMS](https://docs.kernel.org/gpu/drm-kms.html)
-- [notro/panel-mipi-dbi](https://github.com/notro/panel-mipi-dbi)
-- [Raspberry Pi: Device Tree](https://www.raspberrypi.com/documentation/computers/configuration.html#device-trees-overlays-and-parameters)
+- Linux Kernel: panel-mipi-dbi SPI binding.
+- Linux Kernel: DRM/KMS.
+- notro/panel-mipi-dbi.
+- Raspberry Pi: Device Tree.
+- Proyecto: Waveshare 1.69" ST7789V2 en Raspberry Pi OS Trixie.
 
----
-
-**Proyecto:** Waveshare 1.69" ST7789V2 en Raspberry Pi OS Trixie.
-
-**Estado:** documentación técnica basada en una implementación probada en Raspberry Pi Zero W.
+**Estado:** implementación técnica, instalación automatizada, desinstalación y reinstalación probadas satisfactoriamente en Raspberry Pi Zero W Rev 1.1 con Raspberry Pi OS Trixie.
